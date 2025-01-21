@@ -6,11 +6,10 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-    --font-inter: 'Inter', sans-serif;
   }
 
   body {
-    @apply bg-black text-white font-inter antialiased;
+    @apply bg-black text-white font-sans antialiased;
   }
 }
 
