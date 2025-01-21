@@ -6,14 +6,17 @@ import MainContent from '../components/MainContent';
 const Index = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [cursorSize, setCursorSize] = useState(20);
-  const [theme] = useState(() => Math.random() > 0.5 ? 'dark' : 'light');
+  const [theme] = useState<'dark' | 'light'>('dark'); // Fixed type issue
 
   useEffect(() => {
-    // Hide default cursor
-    document.body.style.cursor = 'none';
-    
     const handleMouseMove = (e: MouseEvent) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
+      // Update gradient position globally
+      const root = document.documentElement;
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      root.style.setProperty('--x', `${x}%`);
+      root.style.setProperty('--y', `${y}%`);
     };
 
     const handleMouseEnter = () => setCursorSize(40);
@@ -28,7 +31,6 @@ const Index = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      document.body.style.cursor = 'auto';
       links.forEach(link => {
         link.removeEventListener('mouseenter', handleMouseEnter);
         link.removeEventListener('mouseleave', handleMouseLeave);
@@ -36,33 +38,15 @@ const Index = () => {
     };
   }, []);
 
-  const gradientStyles = {
-    dark: {
-      background: 'radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(59,130,246,0.3) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,1) 100%)',
-      cursorColor: 'rgba(59,130,246,0.2)'
-    },
-    light: {
-      background: 'radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(249,115,22,0.2) 0%, rgba(255,247,237,0.95) 45%, rgba(255,247,237,1) 100%)',
-      cursorColor: 'rgba(249,115,22,0.2)'
-    }
-  };
-
   return (
-    <div className={`min-h-screen relative overflow-hidden ${theme === 'dark' ? 'bg-black' : 'bg-[#f3f3f3]'}`}>
-      {/* Dynamic gradient background with pointer-events-none removed */}
+    <div className="min-h-screen relative overflow-hidden bg-black">
+      {/* Dynamic gradient background */}
       <div 
-        className="absolute inset-0 animate-gradient"
+        className="absolute inset-0 animate-gradient pointer-events-none"
         style={{
-          background: gradientStyles[theme].background,
+          background: 'radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(59,130,246,0.3) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,1) 100%)',
           backgroundSize: '200% 200%',
           animation: 'moveGradient 20s linear infinite',
-        }}
-        onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          const x = ((e.clientX - rect.left) / rect.width) * 100;
-          const y = ((e.clientY - rect.top) / rect.height) * 100;
-          e.currentTarget.style.setProperty('--x', `${x}%`);
-          e.currentTarget.style.setProperty('--y', `${y}%`);
         }}
       />
       
@@ -82,7 +66,7 @@ const Index = () => {
           position: 'fixed',
           width: `${cursorSize}px`,
           height: `${cursorSize}px`,
-          backgroundColor: gradientStyles[theme].cursorColor,
+          backgroundColor: 'rgba(59,130,246,0.2)',
           borderRadius: '50%',
           pointerEvents: 'none',
           transition: 'width 0.2s, height 0.2s, transform 0.1s ease-out',
