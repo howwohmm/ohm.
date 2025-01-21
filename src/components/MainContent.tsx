@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 
-const MainContent = () => (
+const MainContent = ({ theme }: { theme: 'dark' | 'light' }) => (
   <div className="max-w-3xl mx-auto px-6 py-16 md:py-24 relative z-10">
     <motion.h1 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="text-3xl md:text-4xl font-medium text-white mb-8"
+      className={`text-3xl md:text-4xl font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-8`}
     >
       20, awake & figuring it out.
     </motion.h1>
@@ -15,7 +15,7 @@ const MainContent = () => (
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className="text-lg md:text-xl text-gray-100 space-y-6"
+      className={`text-lg md:text-xl ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'} space-y-6`}
     >
       <p>
         hi, i'm Om.{' '}

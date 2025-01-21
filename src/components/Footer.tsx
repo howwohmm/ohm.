@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
-const Footer = () => (
-  <footer className="absolute bottom-0 w-full p-6 text-center text-white/80 z-10">
+const Footer = ({ theme }: { theme: 'dark' | 'light' }) => (
+  <footer className={`absolute bottom-0 w-full p-6 text-center ${theme === 'dark' ? 'text-white/80' : 'text-gray-800/80'} z-10`}>
     <motion.p
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -18,7 +18,11 @@ const Footer = () => (
           repeat: Infinity,
           ease: "easeInOut"
         }}
-        className="inline-block bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
+        className={`inline-block bg-gradient-to-r ${
+          theme === 'dark' 
+            ? 'from-blue-400 to-blue-600' 
+            : 'from-orange-400 to-orange-600'
+        } bg-clip-text text-transparent`}
       >
         inhale skills, exhale solutions
       </motion.span>
