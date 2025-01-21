@@ -1,8 +1,21 @@
-function n(e) {
+interface Position {
+  x: number;
+  y: number;
+}
+
+interface NodeType {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+}
+
+function n(e: any) {
   this.init(e || {});
 }
+
 n.prototype = {
-  init: function (e) {
+  init: function (e: any) {
     this.phase = e.phase || 0;
     this.offset = e.offset || 0;
     this.frequency = e.frequency || 0.001;
@@ -19,12 +32,12 @@ n.prototype = {
   },
 };
 
-function Line(e) {
+function Line(e: any) {
   this.init(e || {});
 }
 
 Line.prototype = {
-  init: function (e) {
+  init: function (e: any) {
     this.spring = e.spring + 0.1 * Math.random() - 0.05;
     this.friction = E.friction + 0.01 * Math.random() - 0.005;
     this.nodes = [];
@@ -76,30 +89,36 @@ Line.prototype = {
   },
 };
 
-function onMousemove(e) {
+function onMousemove(e: MouseEvent | TouchEvent) {
   function o() {
     lines = [];
     for (let e = 0; e < E.trails; e++)
       lines.push(new Line({ spring: 0.45 + (e / E.trails) * 0.025 }));
   }
-  function c(e) {
-    e.touches
-      ? ((pos.x = e.touches[0].pageX), (pos.y = e.touches[0].pageY))
-      : ((pos.x = e.clientX), (pos.y = e.clientY)),
-      e.preventDefault();
+  function c(e: MouseEvent | TouchEvent) {
+    if ('touches' in e) {
+      pos.x = e.touches[0].pageX;
+      pos.y = e.touches[0].pageY;
+    } else {
+      pos.x = (e as MouseEvent).clientX;
+      pos.y = (e as MouseEvent).clientY;
+    }
+    e.preventDefault();
   }
-  function l(e) {
-    1 == e.touches.length &&
-      ((pos.x = e.touches[0].pageX), (pos.y = e.touches[0].pageY));
+  function l(e: TouchEvent) {
+    if (e.touches.length === 1) {
+      pos.x = e.touches[0].pageX;
+      pos.y = e.touches[0].pageY;
+    }
   }
-  document.removeEventListener("mousemove", onMousemove),
-    document.removeEventListener("touchstart", onMousemove),
-    document.addEventListener("mousemove", c),
-    document.addEventListener("touchmove", c),
-    document.addEventListener("touchstart", l),
-    c(e),
-    o(),
-    render();
+  document.removeEventListener("mousemove", onMousemove);
+  document.removeEventListener("touchstart", onMousemove as any);
+  document.addEventListener("mousemove", c);
+  document.addEventListener("touchmove", c as any);
+  document.addEventListener("touchstart", l);
+  c(e);
+  o();
+  render();
 }
 
 function render() {
@@ -123,11 +142,11 @@ function resizeCanvas() {
   ctx.canvas.height = window.innerHeight;
 }
 
-var ctx,
-  f,
+var ctx: any,
+  f: any,
   e = 0,
-  pos = {},
-  lines = [],
+  pos: Position = { x: 0, y: 0 },
+  lines: any[] = [],
   E = {
     debug: true,
     friction: 0.5,
@@ -136,7 +155,8 @@ var ctx,
     dampening: 0.025,
     tension: 0.99,
   };
-function Node() {
+
+function Node(this: NodeType) {
   this.x = 0;
   this.y = 0;
   this.vy = 0;
@@ -144,17 +164,18 @@ function Node() {
 }
 
 export const renderCanvas = function () {
-  ctx = document.getElementById("canvas").getContext("2d");
+  const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+  ctx = canvas.getContext("2d");
   ctx.running = true;
   ctx.frame = 1;
-  f = new n({
+  f = new (n as any)({
     phase: Math.random() * 2 * Math.PI,
     amplitude: 85,
     frequency: 0.0015,
     offset: 285,
   });
   document.addEventListener("mousemove", onMousemove);
-  document.addEventListener("touchstart", onMousemove);
+  document.addEventListener("touchstart", onMousemove as any);
   document.body.addEventListener("orientationchange", resizeCanvas);
   window.addEventListener("resize", resizeCanvas);
   window.addEventListener("focus", () => {
