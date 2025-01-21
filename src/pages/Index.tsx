@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import MainContent from '../components/MainContent';
+import { renderCanvas } from '../components/ui/canvas';
 
 const Index = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [cursorSize, setCursorSize] = useState(20);
-  const [theme] = useState<'dark' | 'light'>('dark'); // Fixed type issue
+  const [theme] = useState<'dark' | 'light'>('dark');
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
-      // Update gradient position globally
       const root = document.documentElement;
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
@@ -29,6 +29,8 @@ const Index = () => {
     });
 
     window.addEventListener('mousemove', handleMouseMove);
+    renderCanvas(); // Initialize canvas animation
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       links.forEach(link => {
@@ -49,6 +51,12 @@ const Index = () => {
           animation: 'moveGradient 20s linear infinite',
         }}
       />
+      
+      {/* Canvas overlay */}
+      <canvas
+        className="pointer-events-none absolute inset-0 z-50"
+        id="canvas"
+      ></canvas>
       
       {/* Noise overlay */}
       <div 
