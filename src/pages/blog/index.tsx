@@ -29,7 +29,7 @@ const Blog = () => {
 
   useEffect(() => {
     // Redirect to the blog subdomain
-    window.location.href = 'https://blog.ohmis.me';
+    window.location.href = 'https://ohm-ten.vercel.app/blog';
   }, []);
 
   useEffect(() => {
