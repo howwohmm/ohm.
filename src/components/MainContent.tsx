@@ -39,36 +39,6 @@ const MainContent = ({ theme }: { theme: 'dark' | 'light' }) => (
         first-year comp sci student at RUAS, figuring out how to build stuff from scratch. 
         I love minimal designs and aesthetics. trying my hand at copywriting & UI/UX along the way :)
       </p>
-
-      <p className="flex flex-wrap gap-4 pt-4">
-        <a href="https://www.instagram.com/ohmdreams/" 
-           target="_blank" 
-           rel="noopener noreferrer"
-           className="link-hover">
-          ig
-        </a>
-        <span className="text-gray-300">||</span>
-        <a href="https://www.linkedin.com/in/arreyaarom/" 
-           target="_blank" 
-           rel="noopener noreferrer"
-           className="link-hover">
-          Li
-        </a>
-        <span className="text-gray-300">||</span>
-        <a href="https://open.spotify.com/playlist/2ks8peOUXIYq05qH2lq9v3" 
-           target="_blank" 
-           rel="noopener noreferrer"
-           className="link-hover">
-          music
-        </a>
-        <span className="text-gray-300">||</span>
-        <a href="https://www.instagram.com/teendandiyan/" 
-           target="_blank" 
-           rel="noopener noreferrer"
-           className="link-hover">
-          photography
-        </a>
-      </p>
     </motion.div>
   </div>
 );
