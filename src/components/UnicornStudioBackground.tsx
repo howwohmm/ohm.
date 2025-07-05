@@ -29,6 +29,24 @@ const UnicornStudioBackground = () => {
       window.UnicornStudio.init();
       window.UnicornStudio.isInitialized = true;
     }
+
+    // Hide the Unicorn Studio branding
+    const style = document.createElement('style');
+    style.textContent = `
+      [data-us-project] div[style*="position: absolute"][style*="bottom"][style*="right"],
+      [data-us-project] a[href*="unicornstudio"],
+      [data-us-project] div:has(a[href*="unicornstudio"]) {
+        display: none !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      // Clean up the style when component unmounts
+      if (style.parentNode) {
+        style.parentNode.removeChild(style);
+      }
+    };
   }, []);
 
   return (
