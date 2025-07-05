@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 
 declare global {
   interface Window {
-    UnicornStudio: {
-      isInitialized: boolean;
-      init: () => void;
+    UnicornStudio?: {
+      isInitialized?: boolean;
+      init?: () => void;
     };
   }
 }
@@ -14,18 +14,20 @@ const UnicornStudioBackground = () => {
   useEffect(() => {
     // Load UnicornStudio script if not already loaded
     if (!window.UnicornStudio) {
-      window.UnicornStudio = { isInitialized: false };
-      
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.27/dist/unicornStudio.umd.js';
       script.onload = () => {
-        if (!window.UnicornStudio.isInitialized) {
+        if (window.UnicornStudio && window.UnicornStudio.init && !window.UnicornStudio.isInitialized) {
           window.UnicornStudio.init();
           window.UnicornStudio.isInitialized = true;
         }
       };
       
       (document.head || document.body).appendChild(script);
+    } else if (window.UnicornStudio.init && !window.UnicornStudio.isInitialized) {
+      // If UnicornStudio is already loaded but not initialized
+      window.UnicornStudio.init();
+      window.UnicornStudio.isInitialized = true;
     }
   }, []);
 
