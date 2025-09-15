@@ -15,9 +15,7 @@ const Blog = () => {
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        console.log('Loading posts...');
         const allPosts = await getAllPosts();
-        console.log('Posts loaded:', allPosts);
         setPosts(allPosts);
       } catch (error) {
         console.error('Error loading posts:', error);
@@ -106,10 +104,10 @@ const Blog = () => {
           className="mb-12 text-center"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Ohmlogs ({posts.length})
+            Blog
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Late-night thoughts, philosophy, and notes from the journey.
+            Insights, updates, and tutorials from our team.
           </p>
         </motion.div>
 

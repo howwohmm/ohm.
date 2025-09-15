@@ -45,10 +45,10 @@ const Header = ({ theme }: { theme: 'dark' | 'light' }) => (
           photography
         </a>
         <span className="text-gray-300">||</span>
-        <Link to="/blog" 
+        <a href="https://ohm-ten.vercel.app/blog" 
            className="link-hover text-gray-100">
           blog
-        </Link>
+        </a>
       </motion.nav>
     </div>
   </header>

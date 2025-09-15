@@ -25,12 +25,7 @@ const MainContent = ({ theme }: { theme: 'dark' | 'light' }) => (
            className="link-underline">
           writing
         </a>
-        , reading & learning how to tell stories that hit. check out my{' '}
-        <a href="/blog" 
-           className="link-underline">
-          blog
-        </a>
-        {' '}for late-night thoughts and random insights. spent the last year with{' '}
+        , reading & learning how to tell stories that hit. spent the last year with{' '}
         <a href="https://port.numberless.tech/" 
            target="_blank" 
            rel="noopener noreferrer"
