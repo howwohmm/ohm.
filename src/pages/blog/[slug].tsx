@@ -3,7 +3,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { getPostBySlug, markdownToHtml, formatDate, Post } from '@/lib/posts';
+import { getPostBySlug, formatDate, Post } from '@/lib/posts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
@@ -15,7 +15,6 @@ const BlogPost = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [cursorSize, setCursorSize] = useState(20);
   const [post, setPost] = useState<Post | null>(null);
-  const [htmlContent, setHtmlContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -31,8 +30,6 @@ const BlogPost = () => {
         const foundPost = await getPostBySlug(slug);
         if (foundPost) {
           setPost(foundPost);
-          const html = await markdownToHtml(foundPost.content);
-          setHtmlContent(html);
         } else {
           setNotFound(true);
         }
@@ -179,8 +176,10 @@ const BlogPost = () => {
             {/* Post content */}
             <div 
               className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-foreground prose-a:text-primary prose-strong:text-foreground prose-code:text-foreground prose-pre:bg-muted prose-blockquote:text-muted-foreground prose-li:text-foreground"
-              dangerouslySetInnerHTML={{ __html: htmlContent }}
-            />
+              style={{ whiteSpace: 'pre-wrap' }}
+            >
+              {post.content}
+            </div>
           </motion.article>
         ) : null}
       </main>

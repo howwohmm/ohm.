@@ -1,6 +1,4 @@
 import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
 
 export interface PostMeta {
   title: string;
@@ -90,10 +88,10 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   }
 }
 
-// Parse markdown content to HTML
+// Parse markdown content to HTML (simplified for now)
 export async function markdownToHtml(markdown: string): Promise<string> {
-  const result = await remark().use(html).process(markdown);
-  return result.toString();
+  // For now, return the markdown as-is. In production, you'd use a proper markdown parser
+  return markdown.replace(/^### /gm, '<h3>').replace(/^## /gm, '<h2>').replace(/^# /gm, '<h1>').replace(/\n/g, '<br>');
 }
 
 // Format date for display
