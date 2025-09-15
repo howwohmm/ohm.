@@ -104,10 +104,10 @@ const Blog = () => {
           className="mb-12 text-center"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Blog
+            Ohmlogs ({posts.length})
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Insights, updates, and tutorials from our team.
+            Late-night thoughts, philosophy, and notes from the journey.
           </p>
         </motion.div>
 
