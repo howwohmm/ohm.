@@ -15,7 +15,9 @@ const Blog = () => {
   useEffect(() => {
     const loadPosts = async () => {
       try {
+        console.log('Loading posts...');
         const allPosts = await getAllPosts();
+        console.log('Posts loaded:', allPosts);
         setPosts(allPosts);
       } catch (error) {
         console.error('Error loading posts:', error);
