@@ -1,31 +1,51 @@
+import { useState, useEffect } from 'react';
+import { useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { useState, useEffect } from 'react';
-import { getAllPosts, Post } from '@/lib/posts';
-import BlogCard from '@/components/BlogCard';
+import { getPostBySlug, markdownToHtml, formatDate, Post } from '@/lib/posts';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-const Blog = () => {
+const BlogPost = () => {
+  const { slug } = useParams<{ slug: string }>();
   const theme = 'dark';
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [cursorSize, setCursorSize] = useState(20);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [post, setPost] = useState<Post | null>(null);
+  const [htmlContent, setHtmlContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    const loadPosts = async () => {
+    const loadPost = async () => {
+      if (!slug) {
+        setNotFound(true);
+        setLoading(false);
+        return;
+      }
+
       try {
-        const allPosts = await getAllPosts();
-        setPosts(allPosts);
+        const foundPost = await getPostBySlug(slug);
+        if (foundPost) {
+          setPost(foundPost);
+          const html = await markdownToHtml(foundPost.content);
+          setHtmlContent(html);
+        } else {
+          setNotFound(true);
+        }
       } catch (error) {
-        console.error('Error loading posts:', error);
+        console.error('Error loading post:', error);
+        setNotFound(true);
       } finally {
         setLoading(false);
       }
     };
 
-    loadPosts();
-  }, []);
+    loadPost();
+  }, [slug]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -56,6 +76,10 @@ const Blog = () => {
       });
     };
   }, []);
+
+  if (notFound) {
+    return <Navigate to="/blog" replace />;
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-background">
@@ -96,43 +120,69 @@ const Blog = () => {
 
       <Header theme={theme} />
       
-      <main className="max-w-6xl mx-auto px-6 py-16 md:py-24 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 text-center"
-        >
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Blog
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Insights, updates, and tutorials from our team.
-          </p>
-        </motion.div>
-
+      <main className="max-w-4xl mx-auto px-6 py-16 md:py-24 relative z-10">
         {loading ? (
           <div className="flex items-center justify-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
           </div>
-        ) : posts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post, index) => (
-              <BlogCard key={post.slug} post={post} index={index} />
-            ))}
-          </div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-center py-16"
+        ) : post ? (
+          <motion.article
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <p className="text-muted-foreground text-lg">
-              No blog posts found. Check back soon for new content!
-            </p>
-          </motion.div>
-        )}
+            {/* Back button */}
+            <Link to="/blog" className="inline-block mb-8">
+              <Button variant="ghost" className="gap-2">
+                <ArrowLeft className="w-4 h-4" />
+                Back to Blog
+              </Button>
+            </Link>
+
+            {/* Cover image */}
+            {post.meta.cover && (
+              <div className="aspect-video mb-8 rounded-lg overflow-hidden">
+                <img
+                  src={post.meta.cover}
+                  alt={post.meta.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Post header */}
+            <header className="mb-8">
+              <div className="flex flex-wrap gap-2 mb-4">
+                {post.meta.tags.map((tag) => (
+                  <Badge key={tag} variant="secondary">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+              
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+                {post.meta.title}
+              </h1>
+              
+              <p className="text-lg text-muted-foreground mb-4">
+                {post.meta.description}
+              </p>
+              
+              <time className="text-sm text-muted-foreground">
+                {formatDate(post.meta.date)}
+              </time>
+            </header>
+
+            {/* Post content */}
+            <div 
+              className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-foreground prose-a:text-primary prose-strong:text-foreground prose-code:text-foreground prose-pre:bg-muted prose-blockquote:text-muted-foreground prose-li:text-foreground"
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
+          </motion.article>
+        ) : null}
       </main>
 
       <Footer theme={theme} />
@@ -140,4 +190,4 @@ const Blog = () => {
   );
 };
 
-export default Blog; 
+export default BlogPost;
