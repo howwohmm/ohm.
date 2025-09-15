@@ -45,7 +45,7 @@ const Header = ({ theme }: { theme: 'dark' | 'light' }) => (
           photography
         </a>
         <span className="text-gray-300">||</span>
-        <a href="https://ohm-ten.vercel.app/blog" 
+        <a href="https://blogv2-henna.vercel.app/" 
            className="link-hover text-gray-100">
           blog
         </a>
