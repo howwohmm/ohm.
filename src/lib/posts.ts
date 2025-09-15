@@ -1,4 +1,5 @@
 import matter from 'gray-matter';
+import { glob } from 'glob';
 
 export interface PostMeta {
   title: string;
@@ -17,57 +18,31 @@ export interface Post {
 // Get all blog posts from the content directory
 export async function getAllPosts(): Promise<Post[]> {
   try {
-    // In a real filesystem, we'd read from /content/blog
-    // For now, we'll use a demo post structure
-    const posts: Post[] = [
-      {
-        slug: 'welcome-to-our-blog',
-        meta: {
-          title: 'Welcome to Our Blog',
-          date: '2024-03-15',
-          description: 'This is the first post on our new blog. Learn about what we have planned.',
-          tags: ['welcome', 'announcement'],
-          cover: '/images/blog/welcome-cover.jpg'
-        },
-        content: `# Welcome to Our Blog
-
-We're excited to launch our new blog! This is where we'll share insights, updates, and tutorials.
-
-## What to Expect
-
-- Technical deep dives
-- Product updates
-- Industry insights
-- How-to guides
-
-Stay tuned for more content coming soon!`
-      },
-      {
-        slug: 'getting-started-guide',
-        meta: {
-          title: 'Getting Started Guide',
-          date: '2024-03-10',
-          description: 'A comprehensive guide to help you get started with our platform.',
-          tags: ['guide', 'tutorial', 'beginner'],
-          cover: '/images/blog/guide-cover.jpg'
-        },
-        content: `# Getting Started Guide
-
-This guide will walk you through the basics of our platform.
-
-## Step 1: Setup
-
-First, you'll need to set up your account...
-
-## Step 2: Configuration
-
-Next, configure your settings...
-
-## Step 3: First Project
-
-Create your first project...`
-      }
-    ];
+    // Get all MDX files from content/blog directory
+    const files = await glob('content/blog/*.mdx');
+    
+    const posts: Post[] = await Promise.all(
+      files.map(async (file) => {
+        const response = await fetch(`/${file}`);
+        const content = await response.text();
+        const { data, content: markdownContent } = matter(content);
+        
+        // Extract slug from filename
+        const slug = file.split('/').pop()?.replace('.mdx', '') || '';
+        
+        return {
+          slug,
+          meta: {
+            title: data.title,
+            date: data.date,
+            description: data.description,
+            tags: data.tags || [],
+            cover: data.cover
+          },
+          content: markdownContent
+        };
+      })
+    );
 
     // Sort by date (newest first)
     return posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime());
