@@ -2,65 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import JetBrains Mono for ASCII elements */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 220 15% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 10% 15%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 32 95% 50%;
+    --accent-foreground: 0 0% 0%;
+    --border: 0 0% 15%;
+    --ring: 32 95% 50%;
+  }
+
+  * {
+    cursor: default;
+  }
+
+  a, button, [role="button"] {
+    cursor: pointer;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-black text-white font-sans antialiased;
+    @apply bg-black text-white antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Custom selection color */
+  ::selection {
+    background-color: hsl(32 95% 50% / 0.3);
+    color: white;
   }
 }
 
 @layer components {
-  .link-underline {
-    @apply relative inline-block text-blue-300 hover:text-blue-400 transition-all duration-300 transform hover:scale-110;
-    text-decoration: none;
-    font-style: italic;
-    border-bottom: 1px dashed rgba(59,130,246,0.3);
+  /* ASCII/Monospace styling */
+  pre, code, .font-mono {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
   }
 
-  .link-underline::after {
-    content: '';
-    @apply absolute bottom-0 left-0 w-full h-[1px] bg-blue-300 transform scale-x-0 transition-transform duration-300 origin-bottom-right;
+  /* Focus states with ASCII brackets */
+  a:focus-visible,
+  button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--accent));
   }
 
-  .link-underline:hover::after {
-    @apply scale-x-100 origin-bottom-left;
-  }
-
-  .link-hover {
-    @apply text-blue-300 hover:text-blue-400 transition-all duration-300 transform hover:scale-110;
-    text-decoration: none;
-    font-style: italic;
-    border-bottom: 1px dashed rgba(59,130,246,0.3);
+  /* Subtle text glow for ASCII elements */
+  .ascii-glow {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   }
 }
 
-@keyframes moveGradient {
-  0% {
-    background-position: 50% 50%;
+@layer utilities {
+  /* Gradient breathing animation */
+  @keyframes breathe {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.05);
+    }
   }
-  50% {
-    background-position: 51% 51%;
-  }
-  100% {
-    background-position: 50% 50%;
-  }
-}
 
-.animate-gradient {
-  animation: moveGradient 20s linear infinite;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+  .animate-breathe {
+    animation: breathe 8s ease-in-out infinite;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  /* Noise texture overlay class */
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 }
