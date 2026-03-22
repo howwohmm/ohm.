@@ -5,7 +5,6 @@ const projects: { name: string; desc: string; url: string; gh?: boolean }[] = [
   // Live
   { name: 'capsule', desc: 'youtube → email courses', url: 'https://capsule.ohm.quest' },
   { name: 'studex', desc: 'edtech platform · india', url: 'https://studexa.ohm.quest' },
-  { name: 'projects hub', desc: 'all live projects', url: 'https://projects.ohm.quest' },
   // GitHub
   { name: 'sheetsai', desc: 'ai for google sheets', url: 'https://github.com/howwohmm/sheetsai', gh: true },
   { name: 'sidequest-maxxer', desc: 'workspace tool', url: 'https://github.com/howwohmm/sidequest-maxxer', gh: true },
