@@ -287,15 +287,6 @@ export const HeroSection = () => {
                   <p style={{ fontSize: '12px', color: 'var(--text-dim)', fontWeight: 300, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {np.artist ?? lastTrack.artist}{!np.isPlaying && ' -- paused'}
                   </p>
-                  <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)', position: 'relative' }}>
-                    <div style={{ position: 'absolute', left: 0, top: 0, height: '1px', width: `${progressPct}%`, background: accentColor, transition: 'width 0.4s linear, background 1s ease' }} />
-                  </div>
-                  {np.duration != null && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '10px', color: accentColor, opacity: 0.5, transition: 'color 1s ease' }}>{fmtMs(localProgress)}</span>
-                      <span style={{ fontSize: '10px', color: accentColor, opacity: 0.5, transition: 'color 1s ease' }}>{fmtMs(np.duration)}</span>
-                    </div>
-                  )}
                 </>
               ) : (
                 <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 300, margin: 0 }}>not playing</p>
