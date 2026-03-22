@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 // ── Data ──────────────────────────────────────────────────────
 const projects: { name: string; desc: string; url: string; gh?: boolean }[] = [
@@ -66,6 +66,8 @@ export const HeroSection = () => {
   const [lastTrack, setLastTrack] = useState<Pick<NowPlaying, 'title' | 'artist' | 'albumArt'>>({});
   const [accentColor, setAccentColor] = useState('#c8c8c8');
   const [bioOpen, setBioOpen] = useState(false);
+  const [localProgress, setLocalProgress] = useState(0);
+  const lastSyncRef = React.useRef(0);
 
   // Clock
   useEffect(() => {
@@ -88,7 +90,11 @@ export const HeroSection = () => {
       if (!res.ok) return;
       const data: NowPlaying = await res.json();
       setNp(data);
-      if (data.isPlaying) setLastTrack({ title: data.title, artist: data.artist, albumArt: data.albumArt });
+      if (data.isPlaying) {
+        setLastTrack({ title: data.title, artist: data.artist, albumArt: data.albumArt });
+        setLocalProgress(data.progress ?? 0);
+        lastSyncRef.current = Date.now();
+      }
     } catch { /* silent */ }
   }, []);
 
@@ -97,6 +103,19 @@ export const HeroSection = () => {
     const id = setInterval(fetchNp, 5_000);
     return () => clearInterval(id);
   }, [fetchNp]);
+
+  // Local progress tick — smooth scrubber between API polls
+  useEffect(() => {
+    if (!np.isPlaying) return;
+    const id = setInterval(() => {
+      setLocalProgress(prev => {
+        const elapsed = Date.now() - lastSyncRef.current;
+        const synced = (np.progress ?? 0) + elapsed;
+        return Math.min(synced, np.duration ?? synced);
+      });
+    }, 500);
+    return () => clearInterval(id);
+  }, [np.isPlaying, np.progress, np.duration]);
 
   // Dominant hue extraction
   useEffect(() => {
@@ -135,8 +154,8 @@ export const HeroSection = () => {
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
   };
 
-  const progressPct = np.isPlaying && np.progress && np.duration
-    ? (np.progress / np.duration) * 100 : 0;
+  const progressPct = np.isPlaying && np.duration
+    ? (localProgress / np.duration) * 100 : 0;
 
   const hasArt = !!(np.albumArt || lastTrack.albumArt);
 
@@ -269,11 +288,11 @@ export const HeroSection = () => {
                     {np.artist ?? lastTrack.artist}{!np.isPlaying && ' -- paused'}
                   </p>
                   <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)', position: 'relative' }}>
-                    <div style={{ position: 'absolute', left: 0, top: 0, height: '1px', width: `${progressPct}%`, background: accentColor, transition: 'width 1s linear, background 1s ease' }} />
+                    <div style={{ position: 'absolute', left: 0, top: 0, height: '1px', width: `${progressPct}%`, background: accentColor, transition: 'width 0.4s linear, background 1s ease' }} />
                   </div>
-                  {np.progress != null && np.duration != null && (
+                  {np.duration != null && (
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '10px', color: accentColor, opacity: 0.5, transition: 'color 1s ease' }}>{fmtMs(np.progress)}</span>
+                      <span style={{ fontSize: '10px', color: accentColor, opacity: 0.5, transition: 'color 1s ease' }}>{fmtMs(localProgress)}</span>
                       <span style={{ fontSize: '10px', color: accentColor, opacity: 0.5, transition: 'color 1s ease' }}>{fmtMs(np.duration)}</span>
                     </div>
                   )}
