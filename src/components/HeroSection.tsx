@@ -159,7 +159,7 @@ export const HeroSection = () => {
           <h1 style={{ fontSize: 'clamp(72px, 13vw, 200px)', fontWeight: 300, letterSpacing: '-0.04em', color: 'var(--white)', lineHeight: 1, margin: 0 }}>
             ohm.
           </h1>
-          <p style={{ fontSize: '11px', color: 'var(--text-ghost)', fontWeight: 300, margin: 0, letterSpacing: '0.02em' }}>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 300, margin: 0, letterSpacing: '0.02em' }}>
             tap to get to know me in one minute
           </p>
         </div>
@@ -186,10 +186,10 @@ export const HeroSection = () => {
           <div style={{ fontSize: '11px', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <p style={{ margin: 0 }}>21, awake and figuring it out.</p>
             <p style={{ margin: 0 }}>
-              hi. i'm ohm. i build things that solve my problems and for the internet — mostly because i got tired of waiting for them to exist.
+              hi. i'm ohm. i build things that solve my problems and for the internet -- mostly because i got tired of waiting for them to exist.
             </p>
             <p style={{ margin: 0 }}>
-              i spend my nights shipping small products that solve real problems, writing raw notes about money, work, things i know / i don't, adulting and the tools that keep me up full night — i rarely post but i do —{' '}
+              i spend my nights shipping small products that solve real problems, writing raw notes about money, work, things i know / i don't, adulting and the tools that keep me up full night -- i rarely post but i do --{' '}
               <a href="https://substack.com/@ohmdreams" target="_blank" rel="noopener noreferrer" style={bioLink}>here</a>.
             </p>
             <p style={{ margin: 0 }}>
@@ -201,9 +201,9 @@ export const HeroSection = () => {
               i like minimal interfaces, tasteful designs, and music. i shoot photos, i think and freewrite every day for an hour and i write when i need to solve problems.
             </p>
             <p style={{ margin: 0 }}>
-              this year you'll see me mostly on ad shoots — helping my frens with shoot day ops, camera operations and making tasteful product videos.
+              this year you'll see me mostly on ad shoots -- helping my frens with shoot day ops, camera operations and making tasteful product videos.
             </p>
-            <p style={{ margin: 0 }}>i'm also actively "vibe coding" // learning the terms — claude code maxxer.</p>
+            <p style={{ margin: 0 }}>i'm also actively "vibe coding" // learning the terms -- claude code maxxer.</p>
             <p style={{ margin: 0 }}>
               videos i've contributed to:{' '}
               <a href="https://x.com/runable_hq/status/1986092697464234053" target="_blank" rel="noopener noreferrer" style={bioLink}>runable launch</a>
@@ -266,7 +266,7 @@ export const HeroSection = () => {
                     {np.title ?? lastTrack.title}
                   </p>
                   <p style={{ fontSize: '12px', color: 'var(--text-dim)', fontWeight: 300, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {np.artist ?? lastTrack.artist}{!np.isPlaying && ' — paused'}
+                    {np.artist ?? lastTrack.artist}{!np.isPlaying && ' -- paused'}
                   </p>
                   <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)', position: 'relative' }}>
                     <div style={{ position: 'absolute', left: 0, top: 0, height: '1px', width: `${progressPct}%`, background: accentColor, transition: 'width 1s linear, background 1s ease' }} />
