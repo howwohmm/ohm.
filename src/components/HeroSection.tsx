@@ -57,7 +57,7 @@ const bioLink: React.CSSProperties = {
   textUnderlineOffset: '2px',
 };
 
-const SPOTIFY_API = 'https://ohm-spotify.vercel.app/api/now-playing';
+const SPOTIFY_API = 'https://ohm-spotify-wheat.vercel.app/api/now-playing';
 
 // ── Component ─────────────────────────────────────────────────
 export const HeroSection = () => {
