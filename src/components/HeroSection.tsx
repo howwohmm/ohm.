@@ -17,15 +17,6 @@ const links = [
   { name: 'substack', url: 'https://substack.com/@ohmdreams' },
 ];
 
-// Weather code → description
-const weatherDesc: Record<number, string> = {
-  0: 'clear', 1: 'mostly clear', 2: 'partly cloudy', 3: 'overcast',
-  45: 'fog', 48: 'fog', 51: 'drizzle', 53: 'drizzle', 55: 'drizzle',
-  61: 'rain', 63: 'rain', 65: 'heavy rain', 71: 'snow', 73: 'snow',
-  80: 'showers', 81: 'showers', 82: 'heavy showers',
-  95: 'thunderstorm', 96: 'thunderstorm', 99: 'thunderstorm',
-};
-
 // ── Types ─────────────────────────────────────────────────────
 interface NowPlaying {
   isPlaying: boolean;
@@ -61,7 +52,6 @@ const bioLink: React.CSSProperties = {
 };
 
 const SPOTIFY_API = 'https://ohm-spotify-wheat.vercel.app/api/now-playing';
-const WEATHER_API = 'https://api.open-meteo.com/v1/forecast?latitude=12.97&longitude=77.59&current=temperature_2m,weather_code';
 
 // ── Component ─────────────────────────────────────────────────
 export const HeroSection = () => {
@@ -70,7 +60,7 @@ export const HeroSection = () => {
   const [lastTrack, setLastTrack] = useState<Pick<NowPlaying, 'title' | 'artist' | 'albumArt'>>({});
   const [accentColor, setAccentColor] = useState('#c8c8c8');
   const [bioOpen, setBioOpen] = useState(false);
-  const [weather, setWeather] = useState('');
+  const [visits, setVisits] = useState<number | null>(null);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window !== 'undefined') return (localStorage.getItem('theme') as 'dark' | 'light') ?? 'dark';
     return 'dark';
@@ -96,20 +86,12 @@ export const HeroSection = () => {
     return () => clearInterval(id);
   }, []);
 
-  // Weather (Bengaluru, no API key needed)
+  // Daily visitor counter
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const res = await fetch(WEATHER_API);
-        const data = await res.json();
-        const temp = Math.round(data.current.temperature_2m);
-        const code = data.current.weather_code;
-        setWeather(`${temp}° · ${weatherDesc[code] ?? 'unknown'}`);
-      } catch { /* silent */ }
-    };
-    fetchWeather();
-    const id = setInterval(fetchWeather, 600_000); // 10 min
-    return () => clearInterval(id);
+    fetch('https://ohm-spotify-wheat.vercel.app/api/visit')
+      .then(r => r.json())
+      .then(d => setVisits(d.count))
+      .catch(() => {});
   }, []);
 
   // Spotify poll
@@ -254,9 +236,9 @@ export const HeroSection = () => {
             <span style={{ fontSize: 'clamp(22px, 3vw, 34px)', fontWeight: 300, color: 'var(--white)', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
               {time}
             </span>
-            {weather && (
+            {visits != null && (
               <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 300 }}>
-                {weather}
+                {visits} {visits === 1 ? 'visit' : 'visits'} today
               </span>
             )}
           </div>
