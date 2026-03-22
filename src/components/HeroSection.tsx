@@ -94,7 +94,7 @@ export const HeroSection = () => {
 
   useEffect(() => {
     fetchNp();
-    const id = setInterval(fetchNp, 1_000);
+    const id = setInterval(fetchNp, 5_000);
     return () => clearInterval(id);
   }, [fetchNp]);
 
