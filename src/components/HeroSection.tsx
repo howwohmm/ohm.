@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // ── Data ──────────────────────────────────────────────────────
 const projects: { name: string; desc: string; url: string; gh?: boolean }[] = [
-  // Live
   { name: 'capsule', desc: 'youtube → email courses', url: 'https://capsule.ohm.quest' },
   { name: 'studex', desc: 'edtech platform · india', url: 'https://studexa.ohm.quest' },
-  // GitHub
   { name: 'sheetsai', desc: 'ai for google sheets', url: 'https://github.com/howwohmm/sheetsai', gh: true },
   { name: 'sidequest-maxxer', desc: 'workspace tool', url: 'https://github.com/howwohmm/sidequest-maxxer', gh: true },
   { name: 'refresh', desc: 'chrome new tab', url: 'https://github.com/howwohmm/refresh-by-ohm', gh: true },
@@ -19,14 +17,21 @@ const links = [
   { name: 'substack', url: 'https://substack.com/@ohmdreams' },
 ];
 
+// Weather code → description
+const weatherDesc: Record<number, string> = {
+  0: 'clear', 1: 'mostly clear', 2: 'partly cloudy', 3: 'overcast',
+  45: 'fog', 48: 'fog', 51: 'drizzle', 53: 'drizzle', 55: 'drizzle',
+  61: 'rain', 63: 'rain', 65: 'heavy rain', 71: 'snow', 73: 'snow',
+  80: 'showers', 81: 'showers', 82: 'heavy showers',
+  95: 'thunderstorm', 96: 'thunderstorm', 99: 'thunderstorm',
+};
+
 // ── Types ─────────────────────────────────────────────────────
 interface NowPlaying {
   isPlaying: boolean;
   title?: string;
   artist?: string;
   albumArt?: string;
-  progress?: number;
-  duration?: number;
 }
 
 // ── Styles ────────────────────────────────────────────────────
@@ -48,7 +53,6 @@ const section = (extra?: React.CSSProperties): React.CSSProperties => ({
   ...extra,
 });
 
-// Inline link style for bio
 const bioLink: React.CSSProperties = {
   color: 'inherit',
   textDecoration: 'underline',
@@ -57,6 +61,7 @@ const bioLink: React.CSSProperties = {
 };
 
 const SPOTIFY_API = 'https://ohm-spotify-wheat.vercel.app/api/now-playing';
+const WEATHER_API = 'https://api.open-meteo.com/v1/forecast?latitude=12.97&longitude=77.59&current=temperature_2m,weather_code';
 
 // ── Component ─────────────────────────────────────────────────
 export const HeroSection = () => {
@@ -65,8 +70,17 @@ export const HeroSection = () => {
   const [lastTrack, setLastTrack] = useState<Pick<NowPlaying, 'title' | 'artist' | 'albumArt'>>({});
   const [accentColor, setAccentColor] = useState('#c8c8c8');
   const [bioOpen, setBioOpen] = useState(false);
-  const [localProgress, setLocalProgress] = useState(0);
-  const lastSyncRef = React.useRef(0);
+  const [weather, setWeather] = useState('');
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') return (localStorage.getItem('theme') as 'dark' | 'light') ?? 'dark';
+    return 'dark';
+  });
+
+  // Theme effect
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   // Clock
   useEffect(() => {
@@ -82,18 +96,30 @@ export const HeroSection = () => {
     return () => clearInterval(id);
   }, []);
 
+  // Weather (Bengaluru, no API key needed)
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch(WEATHER_API);
+        const data = await res.json();
+        const temp = Math.round(data.current.temperature_2m);
+        const code = data.current.weather_code;
+        setWeather(`${temp}° · ${weatherDesc[code] ?? 'unknown'}`);
+      } catch { /* silent */ }
+    };
+    fetchWeather();
+    const id = setInterval(fetchWeather, 600_000); // 10 min
+    return () => clearInterval(id);
+  }, []);
+
   // Spotify poll
   const fetchNp = useCallback(async () => {
     try {
       const res = await fetch(SPOTIFY_API);
       if (!res.ok) return;
-      const data: NowPlaying = await res.json();
+      const data = await res.json();
       setNp(data);
-      if (data.isPlaying) {
-        setLastTrack({ title: data.title, artist: data.artist, albumArt: data.albumArt });
-        setLocalProgress(data.progress ?? 0);
-        lastSyncRef.current = Date.now();
-      }
+      if (data.isPlaying) setLastTrack({ title: data.title, artist: data.artist, albumArt: data.albumArt });
     } catch { /* silent */ }
   }, []);
 
@@ -103,23 +129,10 @@ export const HeroSection = () => {
     return () => clearInterval(id);
   }, [fetchNp]);
 
-  // Local progress tick — smooth scrubber between API polls
-  useEffect(() => {
-    if (!np.isPlaying) return;
-    const id = setInterval(() => {
-      setLocalProgress(prev => {
-        const elapsed = Date.now() - lastSyncRef.current;
-        const synced = (np.progress ?? 0) + elapsed;
-        return Math.min(synced, np.duration ?? synced);
-      });
-    }, 500);
-    return () => clearInterval(id);
-  }, [np.isPlaying, np.progress, np.duration]);
-
   // Dominant hue extraction
   useEffect(() => {
     const art = np.albumArt ?? lastTrack.albumArt;
-    if (!art) { setAccentColor('#c8c8c8'); return; }
+    if (!art) { setAccentColor(theme === 'dark' ? '#c8c8c8' : '#555'); return; }
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
@@ -142,19 +155,12 @@ export const HeroSection = () => {
         h = Math.round(h * 60);
         if (h < 0) h += 360;
       }
-      setAccentColor(`hsl(${h}, 65%, 72%)`);
+      // Light mode: darker accent. Dark mode: lighter accent.
+      setAccentColor(theme === 'dark' ? `hsl(${h}, 65%, 72%)` : `hsl(${h}, 55%, 38%)`);
     };
-    img.onerror = () => setAccentColor('#c8c8c8');
+    img.onerror = () => setAccentColor(theme === 'dark' ? '#c8c8c8' : '#555');
     img.src = art;
-  }, [np.albumArt, lastTrack.albumArt]);
-
-  const fmtMs = (ms: number) => {
-    const s = Math.floor(ms / 1000);
-    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-  };
-
-  const progressPct = np.isPlaying && np.duration
-    ? (localProgress / np.duration) * 100 : 0;
+  }, [np.albumArt, lastTrack.albumArt, theme]);
 
   const hasArt = !!(np.albumArt || lastTrack.albumArt);
 
@@ -242,12 +248,17 @@ export const HeroSection = () => {
         {/* Clock + Spotify */}
         <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: '1px solid var(--border)' }}>
 
-          {/* Clock */}
+          {/* Clock + Weather */}
           <div style={{ padding: '0 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px', borderRight: '1px solid var(--border)' }}>
-            <span style={label}>ist</span>
+            <span style={label}>bengaluru</span>
             <span style={{ fontSize: 'clamp(22px, 3vw, 34px)', fontWeight: 300, color: 'var(--white)', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
               {time}
             </span>
+            {weather && (
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 300 }}>
+                {weather}
+              </span>
+            )}
           </div>
 
           {/* Spotify */}
@@ -328,7 +339,21 @@ export const HeroSection = () => {
 
         {/* Footer */}
         <div style={{ flexShrink: 0, height: '40px', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '12px', color: 'var(--text-dim)' }}>ohm.quest</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <span style={{ fontSize: '12px', color: 'var(--text-dim)' }}>ohm.quest</span>
+            <button
+              onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+              style={{
+                background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                fontFamily: 'Manrope, sans-serif', fontSize: '11px', color: 'var(--text-ghost)',
+                letterSpacing: '0.04em', transition: 'color 0.15s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--white)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-ghost)')}
+            >
+              {theme === 'dark' ? 'light' : 'dark'}
+            </button>
+          </div>
           <div style={{ display: 'flex', gap: '20px' }}>
             {links.map(l => (
               <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer"

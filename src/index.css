@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root, [data-theme="dark"] {
   --bg: #262626;
   --border: #303030;
   --text: #c8c8c8;
@@ -14,6 +14,16 @@
   --white: #e8e8e8;
 }
 
+[data-theme="light"] {
+  --bg: #f5f2ee;
+  --border: #ddd8d0;
+  --text: #3a3a3a;
+  --text-dim: #666;
+  --text-muted: #aaa;
+  --text-ghost: #c8c8c8;
+  --white: #1a1a1a;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -21,6 +31,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
+  transition: background 0.5s ease, color 0.5s ease;
   font-family: 'Manrope', sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
