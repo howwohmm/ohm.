@@ -1,88 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Import JetBrains Mono for ASCII elements */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-@layer base {
-  :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 220 15% 10%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 220 10% 15%;
-    --muted-foreground: 0 0% 70%;
-    --accent: 32 95% 50%;
-    --accent-foreground: 0 0% 0%;
-    --border: 0 0% 15%;
-    --ring: 32 95% 50%;
-  }
-
-  * {
-    cursor: default;
-  }
-
-  a, button, [role="button"] {
-    cursor: pointer;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply bg-black text-white antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-
-  /* Custom selection color */
-  ::selection {
-    background-color: hsl(32 95% 50% / 0.3);
-    color: white;
-  }
+:root {
+  --bg: #262626;
+  --border: #303030;
+  --text: #c8c8c8;
+  --text-dim: #aaa;
+  --text-muted: #484848;
+  --text-ghost: #383838;
+  --white: #e8e8e8;
 }
 
-@layer components {
-  /* ASCII/Monospace styling */
-  pre, code, .font-mono {
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-  }
+*, *::before, *::after { box-sizing: border-box; }
 
-  /* Focus states with ASCII brackets */
-  a:focus-visible,
-  button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px hsl(var(--accent));
-  }
+html { scroll-behavior: smooth; }
 
-  /* Subtle text glow for ASCII elements */
-  .ascii-glow {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
 }
 
-@layer utilities {
-  /* Gradient breathing animation */
-  @keyframes breathe {
-    0%, 100% {
-      opacity: 0.4;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.6;
-      transform: scale(1.05);
-    }
+a { text-decoration: none; color: inherit; }
+
+/* Hero split grid */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100svh;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-name {
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-widgets {
+  display: flex;
+  flex-direction: column;
+}
+
+.widget {
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+  padding: clamp(16px, 2.2vw, 28px) clamp(20px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.widget:last-child {
+  border-bottom: none;
+}
+
+.widget-label {
+  font-size: 10px;
+  color: var(--text-ghost);
+  letter-spacing: 0.06em;
+}
+
+/* Project rows */
+.project-row {
+  border-bottom: 1px solid var(--border);
+  transition: padding-left 0.15s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-row:hover { padding-left: 32px !important; }
+.project-row:hover .project-name { color: var(--white); }
+
+/* Equalizer bars (spotify) */
+.eq-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.eq-bar {
+  width: 2px;
+  background: var(--text-muted);
+  border-radius: 1px;
+  animation: eq 0.8s ease-in-out infinite alternate;
+}
+
+.eq-bar:nth-child(1) { height: 4px; animation-delay: 0s; }
+.eq-bar:nth-child(2) { height: 10px; animation-delay: 0.15s; }
+.eq-bar:nth-child(3) { height: 6px; animation-delay: 0.3s; }
+.eq-bar:nth-child(4) { height: 12px; animation-delay: 0.1s; }
+.eq-bar:nth-child(5) { height: 5px; animation-delay: 0.25s; }
+
+@keyframes eq {
+  from { transform: scaleY(0.3); }
+  to   { transform: scaleY(1); }
+}
+
+@media (max-width: 640px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100svh;
   }
 
-  .animate-breathe {
-    animation: breathe 8s ease-in-out infinite;
+  .hero-name {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 56px clamp(24px, 7vw, 48px);
   }
 
-  /* Noise texture overlay class */
-  .noise-overlay {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  .hero-name h1 {
+    font-size: clamp(80px, 24vw, 140px);
   }
 }
