@@ -216,9 +216,11 @@ export const HeroSection = () => {
               {' · '}
               <a href="https://x.com/heettike/status/1947718407744590077" target="_blank" rel="noopener noreferrer" style={bioLink}>masti with heet</a>
               {' · '}
-              <a href="https://x.com/dayadzn/status/2024136520781988322" target="_blank" rel="noopener noreferrer" style={bioLink}>mave health</a>
+              <a href="https://x.com/thatssodhawal/status/2016556159126441990" target="_blank" rel="noopener noreferrer" style={bioLink}>mave health</a>
               {' · '}
               <a href="https://x.com/ycombinator/status/2026341356910624956" target="_blank" rel="noopener noreferrer" style={bioLink}>avalahalli forest</a>
+              {' · '}
+              <a href="https://x.com/dayadzn/status/2024136520781988322" target="_blank" rel="noopener noreferrer" style={bioLink}>my hollywood debut</a>
             </p>
           </div>
         </div>
