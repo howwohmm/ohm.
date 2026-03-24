@@ -17,6 +17,58 @@ const links = [
   { name: 'substack', url: 'https://substack.com/@ohmdreams' },
 ];
 
+// ── Quotes (from contrarian) ─────────────────────────────────
+const quotes = [
+  { text: "It's better to make a few people really happy than to make a lot of people semi-happy.", source: "Startups in 13 Sentences", url: "http://www.paulgraham.com/13sentences.html" },
+  { text: "Merely measuring something has an uncanny tendency to improve it.", source: "Startups in 13 Sentences", url: "http://www.paulgraham.com/13sentences.html" },
+  { text: "You can get surprisingly far by just not giving up.", source: "Startups in 13 Sentences", url: "http://www.paulgraham.com/13sentences.html" },
+  { text: "If people don't think you're weird, you're living badly.", source: "The Acceleration of Addictiveness", url: "http://www.paulgraham.com/addiction.html" },
+  { text: "We'll increasingly be defined by what we say no to.", source: "The Acceleration of Addictiveness", url: "http://www.paulgraham.com/addiction.html" },
+  { text: "There's a kind of excited curiosity that's both the engine and the rudder of great work.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "What are you excessively curious about — curious to a degree that would bore most other people? That's what you're looking for.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "Interest will drive you to work harder than mere diligence ever could.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "The trouble with planning is that it only works for achievements you can describe in advance.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "People who do great things don't get a lot done every day. They get something done, rather than nothing.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "If you don't try to be the best, you won't even be good.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "Good ideas have to seem bad to most people, or someone would have already explored them.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "Morale compounds via work: high morale helps you do good work, which increases your morale and helps you do even better work.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "Curiosity is the best guide. Your curiosity never lies, and it knows more than you do about what's worth paying attention to.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "Nine times out of ten, sitting around strategizing is just a form of procrastination.", source: "Superlinear Returns", url: "http://www.paulgraham.com/superlinear.html" },
+  { text: "Whenever how well you do depends on how well you've done, you'll get exponential growth.", source: "Superlinear Returns", url: "http://www.paulgraham.com/superlinear.html" },
+  { text: "If you're not learning, you're probably not on a path that leads to superlinear returns.", source: "Superlinear Returns", url: "http://www.paulgraham.com/superlinear.html" },
+  { text: "Ambition tends to make you climb existing peaks, but if you stick close enough to an interesting enough question, it may grow into a mountain beneath you.", source: "Superlinear Returns", url: "http://www.paulgraham.com/superlinear.html" },
+  { text: "If I had to put the recipe for genius into one sentence: to have a disinterested obsession with something that matters.", source: "The Bus Ticket Theory of Genius", url: "http://www.paulgraham.com/genius.html" },
+  { text: "The paths that lead to new ideas tend to look unpromising. If they looked promising, other people would already have explored them.", source: "The Bus Ticket Theory of Genius", url: "http://www.paulgraham.com/genius.html" },
+  { text: "Instead of gritting your teeth and pursuing what all your peers agree is the most promising line of research, maybe you should try doing something just for fun.", source: "The Bus Ticket Theory of Genius", url: "http://www.paulgraham.com/genius.html" },
+  { text: "People can never have a fruitful argument about something that's part of their identity.", source: "Keep Your Identity Small", url: "http://www.paulgraham.com/identity.html" },
+  { text: "The more labels you have for yourself, the dumber they make you.", source: "Keep Your Identity Small", url: "http://www.paulgraham.com/identity.html" },
+  { text: "A single meeting can blow a whole afternoon, by breaking it into two pieces each too small to do anything hard in.", source: "Maker's Schedule, Manager's Schedule", url: "http://www.paulgraham.com/makersschedule.html" },
+  { text: "Startups take off because the founders make them take off.", source: "Do Things that Don't Scale", url: "http://www.paulgraham.com/ds.html" },
+  { text: "I have never once seen a startup lured down a blind alley by trying too hard to make their initial users happy.", source: "Do Things that Don't Scale", url: "http://www.paulgraham.com/ds.html" },
+  { text: "Perfectionism is often an excuse for procrastination.", source: "Do Things that Don't Scale", url: "http://www.paulgraham.com/ds.html" },
+  { text: "Relentlessly prune bullshit, don't wait to do things that matter, and savor the time you have.", source: "Life is Short", url: "http://www.paulgraham.com/vb.html" },
+  { text: "Don't wait before climbing that mountain or writing that book or visiting your mother. You don't need to be constantly reminding yourself why you shouldn't wait. Just don't wait.", source: "Life is Short", url: "http://www.paulgraham.com/vb.html" },
+  { text: "You take things for granted, and then they're gone.", source: "Life is Short", url: "http://www.paulgraham.com/vb.html" },
+  { text: "The question is not how to avoid procrastination, but how to procrastinate well.", source: "Good and Bad Procrastination", url: "http://www.paulgraham.com/procrastination.html" },
+  { text: "Unless you're working on the biggest things you could be working on, you're type-B procrastinating, no matter how much you're getting done.", source: "Good and Bad Procrastination", url: "http://www.paulgraham.com/procrastination.html" },
+  { text: "The way to 'solve' procrastination is to let delight pull you instead of making a to-do list push you.", source: "Good and Bad Procrastination", url: "http://www.paulgraham.com/procrastination.html" },
+  { text: "What one thinks about in the shower in the morning is more important than I'd thought.", source: "The Top Idea in Your Mind", url: "http://www.paulgraham.com/top.html" },
+  { text: "Simple writing keeps you honest.", source: "Write Simply", url: "http://www.paulgraham.com/simply.html" },
+  { text: "Style is doing things in a distinctive way without trying to. Trying to is affectation.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "Nerds have a kind of innocent boldness that's exactly what you need in doing great work.", source: "How to Do Great Work", url: "http://www.paulgraham.com/greatwork.html" },
+  { text: "One of the biggest things holding people back from doing great work is the fear of making something lame.", source: "Early Work", url: "http://www.paulgraham.com/early.html" },
+  { text: "Being slightly overconfident armors you against both other people's skepticism and your own.", source: "Early Work", url: "http://www.paulgraham.com/early.html" },
+  { text: "Determination is effectively the product of will and discipline.", source: "The Anatomy of Determination", url: "http://www.paulgraham.com/determination.html" },
+  { text: "When you take ambitious people and put them together with other ambitious people, they bloom like dying plants given water.", source: "The Anatomy of Determination", url: "http://www.paulgraham.com/determination.html" },
+];
+
+// seeded daily quote — same quote all day, rotates at midnight IST
+const getDailyQuote = () => {
+  const ist = new Date(Date.now() + 5.5 * 60 * 60 * 1000);
+  const daysSinceEpoch = Math.floor(ist.getTime() / 86400000);
+  return quotes[daysSinceEpoch % quotes.length];
+};
+
 // ── Types ─────────────────────────────────────────────────────
 interface NowPlaying {
   isPlaying: boolean;
@@ -37,6 +89,12 @@ interface GithubActivity {
   repo?: string;
   action?: string;
   ago?: number; // minutes
+}
+
+interface GithubStreak {
+  streak: number;
+  commitsToday: number;
+  hasActivity: boolean;
 }
 
 // ── Styles ────────────────────────────────────────────────────
@@ -86,6 +144,8 @@ export const HeroSection = () => {
   const [visits, setVisits] = useState<number | null>(null);
   const [status, setStatus] = useState<Status>({ active: false });
   const [ghActivity, setGhActivity] = useState<GithubActivity>({ hasActivity: false });
+  const [ghStreak, setGhStreak] = useState<GithubStreak>({ streak: 0, commitsToday: 0, hasActivity: false });
+  const dailyQuote = getDailyQuote();
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window !== 'undefined') return (localStorage.getItem('theme') as 'dark' | 'light') ?? 'dark';
     return 'dark';
@@ -119,15 +179,18 @@ export const HeroSection = () => {
       .catch(() => {});
   }, []);
 
-  // Status + GitHub activity
+  // Status + GitHub activity + streak
   useEffect(() => {
     const fetchStatus = () => fetch(`${API_BASE}/status`).then(r => r.json()).then(setStatus).catch(() => {});
     const fetchGh = () => fetch(`${API_BASE}/github-activity`).then(r => r.json()).then(setGhActivity).catch(() => {});
+    const fetchStreak = () => fetch(`${API_BASE}/github-streak`).then(r => r.json()).then(setGhStreak).catch(() => {});
     fetchStatus();
     fetchGh();
+    fetchStreak();
     const s1 = setInterval(fetchStatus, 30_000);
     const s2 = setInterval(fetchGh, 60_000);
-    return () => { clearInterval(s1); clearInterval(s2); };
+    const s3 = setInterval(fetchStreak, 300_000); // 5 min
+    return () => { clearInterval(s1); clearInterval(s2); clearInterval(s3); };
   }, []);
 
   // Spotify poll
@@ -356,6 +419,38 @@ export const HeroSection = () => {
               {ghActivity.action ?? 'pushed to'} {ghActivity.repo} · {formatAgo(ghActivity.ago ?? 0)}
             </a>
           )}
+        </div>
+
+        {/* Quote + Streak */}
+        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: '1px solid var(--border)' }}>
+
+          {/* Daily quote */}
+          <a href={dailyQuote.url} target="_blank" rel="noopener noreferrer" style={{ padding: '0 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '6px', borderRight: '1px solid var(--border)', textDecoration: 'none', color: 'inherit' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text)', fontWeight: 300, margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+              "{dailyQuote.text}"
+            </p>
+            <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 300 }}>
+              — pg, {dailyQuote.source} ↗
+            </span>
+          </a>
+
+          {/* Streak + commits */}
+          <div style={{ padding: '0 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px' }}>
+            <span style={label}>github</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+              <span style={{ fontSize: 'clamp(22px, 3vw, 34px)', fontWeight: 300, color: 'var(--white)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+                {ghStreak.streak}
+              </span>
+              <span style={{ fontSize: '12px', color: 'var(--text-dim)', fontWeight: 300 }}>
+                day streak
+              </span>
+            </div>
+            {ghStreak.commitsToday > 0 && (
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 300 }}>
+                {ghStreak.commitsToday} {ghStreak.commitsToday === 1 ? 'commit' : 'commits'} today
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Projects */}
