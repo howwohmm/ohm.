@@ -145,45 +145,12 @@ export const HeroSection = () => {
   }, [np.albumArt, lastTrack.albumArt, theme]);
 
   const hasArt = !!(np.albumArt || lastTrack.albumArt);
-  const artSrc = np.albumArt ?? lastTrack.albumArt;
 
   return (
-    <div className="hero-grid" style={{ position: 'relative' }}>
-
-      {/* ── Ambient background glow — album art bleeds across entire viewport ── */}
-      {hasArt && (
-        <>
-          <div
-            className="ambient-glow"
-            style={{
-              position: 'absolute',
-              inset: '-40%',
-              backgroundImage: `url(${artSrc})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              filter: 'blur(120px) saturate(1.8)',
-              opacity: np.isPlaying ? (theme === 'dark' ? 0.18 : 0.08) : (theme === 'dark' ? 0.06 : 0.03),
-              transition: 'opacity 2s ease, filter 2s ease',
-              zIndex: 0,
-              pointerEvents: 'none',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: `radial-gradient(ellipse at 70% 20%, ${accentColor}15 0%, transparent 60%), radial-gradient(ellipse at 30% 80%, ${accentColor}08 0%, transparent 50%)`,
-              opacity: np.isPlaying ? 1 : 0.3,
-              transition: 'opacity 2s ease',
-              zIndex: 0,
-              pointerEvents: 'none',
-            }}
-          />
-        </>
-      )}
+    <div className="hero-grid">
 
       {/* ── Left: name (toggles bio) ── */}
-      <div className="hero-name" style={{ position: 'relative', zIndex: 1 }} onClick={() => setBioOpen(false)}>
+      <div className="hero-name" style={{ position: 'relative' }} onClick={() => setBioOpen(false)}>
 
         {/* Closed — big centered name + hint */}
         <div style={{
@@ -260,7 +227,7 @@ export const HeroSection = () => {
       </div>
 
       {/* ── Right: widgets ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 1 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 
         {/* Clock + Spotify */}
         <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: '1px solid var(--border)' }}>
@@ -282,12 +249,12 @@ export const HeroSection = () => {
           <div style={{ position: 'relative', overflow: 'hidden' }}>
             {hasArt && (
               <div style={{
-                position: 'absolute', inset: 0,
+                position: 'absolute', inset: '-50%',
                 backgroundImage: `url(${np.albumArt ?? lastTrack.albumArt})`,
                 backgroundSize: 'cover', backgroundPosition: 'center',
-                filter: 'blur(48px)', transform: 'scale(1.4)',
-                opacity: np.isPlaying ? (theme === 'dark' ? 0.28 : 0.12) : (theme === 'dark' ? 0.12 : 0.05),
-                transition: 'opacity 1.5s ease', zIndex: 0,
+                filter: 'blur(60px) saturate(1.6)',
+                opacity: np.isPlaying ? (theme === 'dark' ? 0.45 : 0.2) : (theme === 'dark' ? 0.15 : 0.06),
+                transition: 'opacity 2s ease', zIndex: 0,
               }} />
             )}
             {hasArt && (

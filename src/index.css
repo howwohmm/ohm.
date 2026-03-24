@@ -51,11 +51,6 @@ a { text-decoration: none; color: inherit; }
   overflow: hidden;
 }
 
-/* Ambient album art glow — iOS lock screen feel */
-.ambient-glow {
-  will-change: opacity;
-}
-
 .hero-name {
   border-right: 1px solid var(--border);
   position: relative;
