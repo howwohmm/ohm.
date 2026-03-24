@@ -48,6 +48,12 @@ a { text-decoration: none; color: inherit; }
   grid-template-columns: 1fr 1fr;
   height: 100svh;
   border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Ambient album art glow — iOS lock screen feel */
+.ambient-glow {
+  will-change: opacity;
 }
 
 .hero-name {

@@ -1,0 +1,77 @@
+<h2>Which design direction feels right?</h2>
+<p class="subtitle">Same dark aesthetic and your content — different vibe. Pick the one that matches how you want to come across.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="editorial" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0a0a;padding:24px;font-family:'Georgia',serif;min-height:180px;border-bottom:1px solid #222;">
+      <div style="color:#888;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;font-family:monospace">ohm.quest</div>
+      <div style="color:#f0f0f0;font-size:28px;font-weight:400;line-height:1.2;margin-bottom:12px;">i'm ohm. a college student<br>in india who builds things.</div>
+      <div style="color:#555;font-size:12px;line-height:1.8;font-family:'Georgia',serif;">started with ideas, moved to actual products, now i have a folder of shipped stuff<br>and an even bigger folder of experiments...</div>
+      <div style="margin-top:16px;display:flex;gap:20px;">
+        <span style="color:#666;font-size:11px;border-bottom:1px solid #333;padding-bottom:2px;">twitter</span>
+        <span style="color:#666;font-size:11px;border-bottom:1px solid #333;padding-bottom:2px;">github</span>
+        <span style="color:#666;font-size:11px;border-bottom:1px solid #333;padding-bottom:2px;">email</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Editorial / Temper-inspired</h3>
+      <p>Long-scroll prose. Big type. Text is the design. Links woven naturally into paragraphs. Staggered fade-in on scroll. Clean, readable, timeless. Like a good essay, not a portfolio.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="terminal" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050505;padding:24px;font-family:monospace;min-height:180px;border-bottom:1px solid #222;">
+      <div style="color:#3a3a3a;font-size:10px;margin-bottom:6px;">┌─ ohm.quest ──────────────────┐</div>
+      <div style="color:#e8e8e8;font-size:22px;font-weight:700;letter-spacing:-1px;margin-bottom:4px;">ohm<span style="color:#f59e0b">.</span></div>
+      <div style="color:#555;font-size:11px;margin-bottom:16px;">builder · india · figuring it out</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+        <div style="background:#0f0f0f;border:1px solid #1a1a1a;padding:10px;border-radius:4px;">
+          <div style="color:#22c55e;font-size:9px;letter-spacing:2px;margin-bottom:4px;">🟢 LIVE</div>
+          <div style="color:#ccc;font-size:11px;">Capsule</div>
+          <div style="color:#444;font-size:10px;">YouTube → email course</div>
+        </div>
+        <div style="background:#0f0f0f;border:1px solid #1a1a1a;padding:10px;border-radius:4px;">
+          <div style="color:#f59e0b;font-size:9px;letter-spacing:2px;margin-bottom:4px;">🟡 WIP</div>
+          <div style="color:#ccc;font-size:11px;">Studex</div>
+          <div style="color:#444;font-size:10px;">timetable for college students</div>
+        </div>
+      </div>
+      <div style="color:#2a2a2a;font-size:10px;margin-top:12px;">└──────────────────────────────┘</div>
+    </div>
+    <div class="card-body">
+      <h3>B — Terminal / Hacker cards</h3>
+      <p>Project grid front and center with status badges (🟢 live, 🟡 WIP, 🔵 shipped). Monospace accents, typewriter effects, scanline texture. ASCII-art touches modernized. Feels like a dev's personal OS.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="magazine" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#080808;padding:24px;min-height:180px;border-bottom:1px solid #222;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;height:140px;">
+        <div style="display:flex;flex-direction:column;justify-content:flex-end;">
+          <div style="color:#f0f0f0;font-size:36px;font-weight:800;letter-spacing:-2px;line-height:1;font-family:system-ui">ohm<span style="color:#f59e0b">.</span></div>
+          <div style="color:#555;font-size:11px;margin-top:6px;font-family:system-ui">builder. india. 20.</div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <div style="background:#f59e0b;color:#000;font-size:9px;padding:3px 8px;font-weight:700;letter-spacing:1px;font-family:monospace">STUDEX</div>
+            <div style="border:1px solid #333;color:#555;font-size:9px;padding:3px 8px;font-family:monospace">CAPSULE</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;justify-content:center;">
+          <div style="background:#0f0f0f;border-left:2px solid #f59e0b;padding:8px 10px;">
+            <div style="color:#888;font-size:9px;margin-bottom:2px;font-family:monospace">BUILDING NOW</div>
+            <div style="color:#ddd;font-size:12px;font-family:system-ui">Studex — college app</div>
+          </div>
+          <div style="background:#0f0f0f;border-left:2px solid #333;padding:8px 10px;">
+            <div style="color:#888;font-size:9px;margin-bottom:2px;font-family:monospace">SHIPPED</div>
+            <div style="color:#555;font-size:12px;font-family:system-ui">Capsule · Refresh · Contrarian</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Magazine / Two-pane</h3>
+      <p>Two-column hero: big name + tagline left, highlighted projects right. Amber accent color. Status pills and project badges. Feels like a founder's profile — opinionated, confident, scannable at a glance.</p>
+    </div>
+  </div>
+
+</div>
