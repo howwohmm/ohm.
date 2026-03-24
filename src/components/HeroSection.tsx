@@ -25,6 +25,20 @@ interface NowPlaying {
   albumArt?: string;
 }
 
+interface Status {
+  active: boolean;
+  text?: string;
+  emoji?: string;
+  ago?: number; // minutes
+}
+
+interface GithubActivity {
+  hasActivity: boolean;
+  repo?: string;
+  action?: string;
+  ago?: number; // minutes
+}
+
 // ── Styles ────────────────────────────────────────────────────
 const label: React.CSSProperties = {
   fontSize: '11px',
@@ -51,7 +65,16 @@ const bioLink: React.CSSProperties = {
   textUnderlineOffset: '2px',
 };
 
-const SPOTIFY_API = 'https://ohm-spotify-wheat.vercel.app/api/now-playing';
+const API_BASE = 'https://ohm-spotify-wheat.vercel.app/api';
+
+const formatAgo = (mins: number): string => {
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const h = Math.floor(mins / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  return `${d}d ago`;
+};
 
 // ── Component ─────────────────────────────────────────────────
 export const HeroSection = () => {
@@ -61,6 +84,8 @@ export const HeroSection = () => {
   const [accentColor, setAccentColor] = useState('#c8c8c8');
   const [bioOpen, setBioOpen] = useState(false);
   const [visits, setVisits] = useState<number | null>(null);
+  const [status, setStatus] = useState<Status>({ active: false });
+  const [ghActivity, setGhActivity] = useState<GithubActivity>({ hasActivity: false });
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window !== 'undefined') return (localStorage.getItem('theme') as 'dark' | 'light') ?? 'dark';
     return 'dark';
@@ -88,16 +113,27 @@ export const HeroSection = () => {
 
   // Daily visitor counter
   useEffect(() => {
-    fetch('https://ohm-spotify-wheat.vercel.app/api/visit')
+    fetch(`${API_BASE}/visit`)
       .then(r => r.json())
       .then(d => setVisits(d.count))
       .catch(() => {});
   }, []);
 
+  // Status + GitHub activity
+  useEffect(() => {
+    const fetchStatus = () => fetch(`${API_BASE}/status`).then(r => r.json()).then(setStatus).catch(() => {});
+    const fetchGh = () => fetch(`${API_BASE}/github-activity`).then(r => r.json()).then(setGhActivity).catch(() => {});
+    fetchStatus();
+    fetchGh();
+    const s1 = setInterval(fetchStatus, 30_000);
+    const s2 = setInterval(fetchGh, 60_000);
+    return () => { clearInterval(s1); clearInterval(s2); };
+  }, []);
+
   // Spotify poll
   const fetchNp = useCallback(async () => {
     try {
-      const res = await fetch(SPOTIFY_API);
+      const res = await fetch(`${API_BASE}/now-playing`);
       if (!res.ok) return;
       const data = await res.json();
       setNp(data);
@@ -289,14 +325,37 @@ export const HeroSection = () => {
           </div>
         </div>
 
-        {/* Right now */}
+        {/* Status */}
         <div style={section()}>
-          <span style={label}>right now</span>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px 20px' }}>
-            {['ad shoots + camera ops', 'helping founders with anything and everything i know', 'claude code maxxing'].map(item => (
-              <span key={item} style={{ fontSize: '14px', color: 'var(--text)', fontWeight: 300 }}>{item}</span>
-            ))}
-          </div>
+          <span style={label}>status</span>
+          {status.active ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <span style={{ fontSize: '14px', color: 'var(--white)', fontWeight: 400 }}>
+                {status.emoji && `${status.emoji} `}{status.text}
+              </span>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 300 }}>
+                {formatAgo(status.ago ?? 0)}
+              </span>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px 20px' }}>
+              {['ad shoots + camera ops', 'helping founders ship', 'claude code maxxing'].map(item => (
+                <span key={item} style={{ fontSize: '14px', color: 'var(--text)', fontWeight: 300 }}>{item}</span>
+              ))}
+            </div>
+          )}
+          {ghActivity.hasActivity && (
+            <a
+              href={`https://github.com/${ghActivity.repo?.includes('/') ? ghActivity.repo : `howwohmm/${ghActivity.repo}`}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 300, transition: 'color 0.15s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-dim)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
+            >
+              {ghActivity.action ?? 'pushed to'} {ghActivity.repo} · {formatAgo(ghActivity.ago ?? 0)}
+            </a>
+          )}
         </div>
 
         {/* Projects */}
