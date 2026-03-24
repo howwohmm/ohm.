@@ -1,10 +1,10 @@
 const projects = [
-  { name: 'sheetsai', desc: 'ai for google sheets', url: 'https://sheetsai.ohm.quest', live: true },
-  { name: 'studex', desc: 'edtech platform · india', url: 'https://studexa.ohm.quest', live: true },
-  { name: 'capsule', desc: 'youtube → email courses', url: 'https://mindos.fly.dev', live: true },
-  { name: 'pg-quotes', desc: 'paul graham wisdom, daily', url: 'https://pgquotes.ohm.quest', live: true },
-  { name: 'letters', desc: 'personal letters by ohm.', url: 'https://letters.ohm.quest', live: true },
-  { name: 'contrarian', desc: 'chrome new tab extension', url: '#', live: false },
+  { name: 'capsule', desc: 'youtube → email courses', url: 'https://capsule.ohm.quest', live: true },
+  { name: 'studex', desc: 'edtech platform · india', url: 'https://studex.ohm.quest', live: true },
+  { name: 'refresh', desc: 'ai-powered new tab', url: '', live: false },
+  { name: 'contrarian', desc: 'pg quotes chrome extension', url: '', live: false },
+  { name: 'row0', desc: 'ai for spreadsheets', url: '', live: false },
+  { name: 'oss-ghost', desc: 'autonomous foss contributor', url: '', live: false },
 ];
 
 const links = [
@@ -27,26 +27,39 @@ export const ProjectsSection = () => (
         things i built
       </p>
       <div style={{ borderTop: '1px solid var(--border)' }}>
-        {projects.map(p => (
-          <a
-            key={p.name}
-            href={p.url}
-            target={p.url !== '#' ? '_blank' : undefined}
-            rel="noopener noreferrer"
-            className="project-row"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-          >
-            <span className="project-name" style={{ fontSize: 'clamp(14px, 1.8vw, 16px)', fontWeight: 400, color: 'var(--text-dim)', letterSpacing: '-0.01em', transition: 'color 0.15s' }}>
-              {p.name}
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <span style={{ fontSize: '12px', color: 'var(--text-ghost)', fontWeight: 300 }}>
-                {p.desc}
+        {projects.map(p => {
+          const Row = p.live ? 'a' : 'div';
+          const rowProps = p.live
+            ? { href: p.url, target: '_blank', rel: 'noopener noreferrer' }
+            : {};
+          return (
+            <Row
+              key={p.name}
+              {...rowProps}
+              className="project-row"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: p.live ? 'pointer' : 'default',
+              }}
+            >
+              <span className="project-name" style={{ fontSize: 'clamp(14px, 1.8vw, 16px)', fontWeight: 400, color: 'var(--text-dim)', letterSpacing: '-0.01em', transition: 'color 0.15s' }}>
+                {p.name}
               </span>
-              <span style={{ fontSize: '13px', color: 'var(--text-ghost)' }}>↗</span>
-            </div>
-          </a>
-        ))}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <span style={{ fontSize: '12px', color: 'var(--text-ghost)', fontWeight: 300 }}>
+                  {p.desc}
+                </span>
+                {p.live ? (
+                  <span style={{ fontSize: '13px', color: 'var(--text-ghost)' }}>↗</span>
+                ) : (
+                  <span style={{ fontSize: '10px', color: 'var(--text-ghost)', letterSpacing: '0.04em', opacity: 0.6 }}>building</span>
+                )}
+              </div>
+            </Row>
+          );
+        })}
       </div>
     </div>
 

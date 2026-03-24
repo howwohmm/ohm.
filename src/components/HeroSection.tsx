@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 
 // ── Data ──────────────────────────────────────────────────────
-const projects: { name: string; desc: string; url: string; gh?: boolean }[] = [
-  { name: 'capsule', desc: 'youtube → email courses', url: 'https://capsule.ohm.quest' },
-  { name: 'studex', desc: 'edtech platform · india', url: 'https://studexa.ohm.quest' },
-  { name: 'sheetsai', desc: 'ai for google sheets', url: 'https://github.com/howwohmm/sheetsai', gh: true },
-  { name: 'sidequest-maxxer', desc: 'workspace tool', url: 'https://github.com/howwohmm/sidequest-maxxer', gh: true },
-  { name: 'refresh', desc: 'chrome new tab', url: 'https://github.com/howwohmm/refresh-by-ohm', gh: true },
-  { name: "paul graham's", desc: 'chrome quotes extension', url: 'https://github.com/howwohmm/contrarian-by-ohm', gh: true },
+const projects: { name: string; desc: string; url: string; live: boolean }[] = [
+  { name: 'capsule', desc: 'youtube → email courses', url: 'https://capsule.ohm.quest', live: true },
+  { name: 'studex', desc: 'edtech platform · india', url: 'https://studex.ohm.quest', live: true },
+  { name: 'refresh', desc: 'ai-powered new tab', url: '', live: false },
+  { name: 'contrarian', desc: 'pg quotes chrome extension', url: '', live: false },
+  { name: 'row0', desc: 'ai for spreadsheets', url: '', live: false },
+  { name: 'oss-ghost', desc: 'autonomous foss contributor', url: '', live: false },
 ];
 
 const links = [
@@ -145,12 +145,45 @@ export const HeroSection = () => {
   }, [np.albumArt, lastTrack.albumArt, theme]);
 
   const hasArt = !!(np.albumArt || lastTrack.albumArt);
+  const artSrc = np.albumArt ?? lastTrack.albumArt;
 
   return (
-    <div className="hero-grid">
+    <div className="hero-grid" style={{ position: 'relative' }}>
+
+      {/* ── Ambient background glow — album art bleeds across entire viewport ── */}
+      {hasArt && (
+        <>
+          <div
+            className="ambient-glow"
+            style={{
+              position: 'absolute',
+              inset: '-40%',
+              backgroundImage: `url(${artSrc})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              filter: 'blur(120px) saturate(1.8)',
+              opacity: np.isPlaying ? (theme === 'dark' ? 0.18 : 0.08) : (theme === 'dark' ? 0.06 : 0.03),
+              transition: 'opacity 2s ease, filter 2s ease',
+              zIndex: 0,
+              pointerEvents: 'none',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `radial-gradient(ellipse at 70% 20%, ${accentColor}15 0%, transparent 60%), radial-gradient(ellipse at 30% 80%, ${accentColor}08 0%, transparent 50%)`,
+              opacity: np.isPlaying ? 1 : 0.3,
+              transition: 'opacity 2s ease',
+              zIndex: 0,
+              pointerEvents: 'none',
+            }}
+          />
+        </>
+      )}
 
       {/* ── Left: name (toggles bio) ── */}
-      <div className="hero-name" style={{ position: 'relative' }} onClick={() => setBioOpen(false)}>
+      <div className="hero-name" style={{ position: 'relative', zIndex: 1 }} onClick={() => setBioOpen(false)}>
 
         {/* Closed — big centered name + hint */}
         <div style={{
@@ -227,7 +260,7 @@ export const HeroSection = () => {
       </div>
 
       {/* ── Right: widgets ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 1 }}>
 
         {/* Clock + Spotify */}
         <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: '1px solid var(--border)' }}>
@@ -253,7 +286,7 @@ export const HeroSection = () => {
                 backgroundImage: `url(${np.albumArt ?? lastTrack.albumArt})`,
                 backgroundSize: 'cover', backgroundPosition: 'center',
                 filter: 'blur(48px)', transform: 'scale(1.4)',
-                opacity: np.isPlaying ? 0.28 : 0.12,
+                opacity: np.isPlaying ? (theme === 'dark' ? 0.28 : 0.12) : (theme === 'dark' ? 0.12 : 0.05),
                 transition: 'opacity 1.5s ease', zIndex: 0,
               }} />
             )}
@@ -275,7 +308,7 @@ export const HeroSection = () => {
               </div>
               {(np.isPlaying || lastTrack.title) ? (
                 <>
-                  <p style={{ fontSize: '14px', color: np.isPlaying ? accentColor : 'var(--text-muted)', fontWeight: 400, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: '0 1px 4px rgba(0,0,0,0.6)', transition: 'color 1s ease' }}>
+                  <p style={{ fontSize: '14px', color: np.isPlaying ? accentColor : 'var(--text-muted)', fontWeight: 400, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: theme === 'dark' ? '0 1px 4px rgba(0,0,0,0.6)' : 'none', transition: 'color 1s ease' }}>
                     {np.title ?? lastTrack.title}
                   </p>
                   <p style={{ fontSize: '12px', color: 'var(--text-dim)', fontWeight: 300, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -305,19 +338,31 @@ export const HeroSection = () => {
             <span style={label}>things i built</span>
           </div>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            {projects.map(p => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" className="project-row"
-                style={{ flex: 1, padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-              >
-                <span className="project-name" style={{ fontSize: '15px', color: 'var(--text)', fontWeight: 400, letterSpacing: '-0.01em', transition: 'color 0.15s' }}>
-                  {p.name}
-                </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {p.gh && <span style={{ fontSize: '10px', color: 'var(--text-ghost)', letterSpacing: '0.05em' }}>gh</span>}
-                  <span style={{ fontSize: '13px', color: 'var(--text-dim)', fontWeight: 300 }}>{p.desc} ↗</span>
-                </div>
-              </a>
-            ))}
+            {projects.map(p => {
+              const Row = p.live ? 'a' : 'div';
+              const rowProps = p.live
+                ? { href: p.url, target: '_blank' as const, rel: 'noopener noreferrer' }
+                : {};
+              return (
+                <Row key={p.name} {...rowProps} className="project-row"
+                  style={{ flex: 1, padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: p.live ? 'pointer' : 'default' }}
+                >
+                  <span className="project-name" style={{ fontSize: '15px', color: 'var(--text)', fontWeight: 400, letterSpacing: '-0.01em', transition: 'color 0.15s' }}>
+                    {p.name}
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {p.live ? (
+                      <span style={{ fontSize: '13px', color: 'var(--text-dim)', fontWeight: 300 }}>{p.desc} ↗</span>
+                    ) : (
+                      <>
+                        <span style={{ fontSize: '13px', color: 'var(--text-dim)', fontWeight: 300 }}>{p.desc}</span>
+                        <span style={{ fontSize: '10px', color: 'var(--text-ghost)', letterSpacing: '0.04em', opacity: 0.6 }}>building</span>
+                      </>
+                    )}
+                  </div>
+                </Row>
+              );
+            })}
           </div>
         </div>
 
