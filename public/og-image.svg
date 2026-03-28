@@ -1,0 +1,49 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#262626"/>
+
+  <!-- Subtle bottom-right accent glow -->
+  <radialGradient id="glow" cx="85%" cy="75%" r="40%">
+    <stop offset="0%" stop-color="#a0a0ff" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="#262626" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Name -->
+  <text
+    x="80"
+    y="290"
+    font-family="Manrope, system-ui, sans-serif"
+    font-weight="300"
+    font-size="72"
+    fill="#f0ede8"
+    letter-spacing="-1"
+  >om mishra</text>
+
+  <!-- Tagline -->
+  <text
+    x="80"
+    y="358"
+    font-family="Manrope, system-ui, sans-serif"
+    font-weight="300"
+    font-size="28"
+    fill="#888"
+    letter-spacing="0"
+  >builder · indie hacker · designer</text>
+
+  <!-- URL -->
+  <text
+    x="80"
+    y="540"
+    font-family="Manrope, system-ui, sans-serif"
+    font-weight="300"
+    font-size="22"
+    fill="#555"
+  >ohm.quest</text>
+</svg>
