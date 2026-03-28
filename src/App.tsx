@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Blog from "./pages/blog";
 import BlogPost from "./pages/blog/[slug]";
+import ToolsIndex from "./pages/tools/index";
+import OgImageTool from "./pages/tools/og-image";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +19,8 @@ const App = () => (
         <Route path="/" element={<Index />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/tools" element={<ToolsIndex />} />
+        <Route path="/tools/og-image" element={<OgImageTool />} />
       </Routes>
     </BrowserRouter>
   </QueryClientProvider>
