@@ -291,7 +291,7 @@ export const HeroSection = () => {
           <div style={{ fontSize: '11px', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <p style={{ margin: 0 }}>21, awake and figuring it out.</p>
             <p style={{ margin: 0 }}>
-              hi. i'm ohm. i build things that solve my problems and for the internet -- mostly because i got tired of waiting for them to exist.
+              hi. i'm ohm. (om mishra) — i build things that solve my problems and for the internet -- mostly because i got tired of waiting for them to exist.
             </p>
             <p style={{ margin: 0 }}>
               i spend my nights shipping small products that solve real problems, writing raw notes about money, work, things i know / i don't, adulting and the tools that keep me up full night -- i rarely post but i do --{' '}
